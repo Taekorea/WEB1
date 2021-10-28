@@ -1,0 +1,51 @@
+
+
+
+<html>
+<head>
+    <title>Html-Qrcode Demo</title>
+  <META  http-equiv="content-type" content="text/html; charset=utf-8" >
+<META name="viewport" content="width=device-width, initial-scale=1, minimun-scale=1, maximum-scale=1">
+    </META>
+  </META>
+  </head>
+<body>
+    <div id="qr-reader" style="width:500px"></div>
+    <div id="qr-reader-results"></div>
+  <li><label for="A">A(파일명)</label><br><INPUT TYPE ="text" NAME="A" ID="AA"></li>
+</body>
+<script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+<script>
+    function docReady(fn) {
+        // see if DOM is already available
+        if (document.readyState === "complete"
+            || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function () {
+        var resultContainer = document.getElementById('qr-reader-results');
+        document.getElementById('AA')=resultContainer;
+        var lastResult, countResults = 0;
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText !== lastResult) {
+                ++countResults;
+                lastResult = decodedText;
+                // Handle on success condition with the decoded message.
+                console.log(`Scan result ${decodedText}`, decodedResult);
+            }
+        }
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+</script>
+  
+
+
+</html>
