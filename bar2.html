@@ -19,13 +19,12 @@
 <script src="html5-qrcode.min.js"></script>
 <script>
     function docReady(fn) {
-      var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10, qrbox: 250 });
+      
         // see if DOM is already available
         if (document.readyState === "complete"
             || document.readyState === "interactive") {
             // call on next available tick
-            setTimeout(fn);
+            setTimeout(fn,1);
         } else {
             document.addEventListener("DOMContentLoaded", fn);
         }
