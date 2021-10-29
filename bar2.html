@@ -40,9 +40,10 @@
                 lastResult = decodedText;
                 // Handle on success condition with the decoded message.
                 console.log(`Scan result ${decodedText}`, decodedResult);
+              html5QrcodeScanner.clear();
               document.getElementById('AA').value=decodedText;
               $('#fm').submit();
-              html5QrcodeScanner.clear();
+              
             }
           
         }
