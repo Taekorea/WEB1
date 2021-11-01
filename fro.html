@@ -1,0 +1,110 @@
+<html>
+<head>
+    <title>Html-Qrcode Demo</title>
+  <META  http-equiv="content-type" content="text/html; charset=utf-8" >
+<META name="viewport" content="width=device-width, initial-scale=1, minimun-scale=1, maximum-scale=1">
+<style>
+  a {
+      color: red ;
+      text-decoration: none;
+  }
+  h1{
+      color: green ;
+      border-bottom: 1px solid gray;
+      margin:10px;
+  }
+  .green{
+      color: white ;
+      font-size: 15pt;
+      text-align: center;
+  }
+  li{
+      font-size: 15pt
+  }
+  ul {
+      list-style: none;
+  }
+  li label {
+      width: 400px;
+      float: left;
+      text-align: left;
+      padding-right: 8px;
+  }
+  input[type="submit"] {
+      text-align: center;
+      font-size: 1.5em;
+      width: :100% ;
+      height: 50px;
+      margin-top: : 15px;
+  }
+  input[type="text"] {
+      font-size: 1.5em;
+
+      width: 250px ;
+      height: 50px;
+  }
+</style>
+  
+  <body>
+    <div id="qr-reader" style="width:350px"></div>
+    <div id="qr-reader-results"></div>
+<h1><div align="center"><font face="맑은 고딕">동결사진촬영</font></h1>
+
+<FORM METHOD="post" ACTION="http://lovelikelove.ipdisk.co.kr:8000/frozen2.php" enctype="multipart/form-data">
+
+<ul>
+<li><label for="A">병리번호</label><br><INPUT TYPE ="text" NAME="A" value="S21-" ID="AA"></li>
+<li><label for="B">블록명</label><br><INPUT TYPE ="text" NAME="B" value="FS"></li>
+<li><label for="C">전달사항</label><br><INPUT TYPE ="text" NAME="C" ></li>
+
+
+<li><label for="fileToupload">사진선택</label><br><input type="file" name="fileToUpload" id="fileToUpload"></li>
+</ul>
+<div align="center"><input TYPE="submit" VALUE="전송하기">
+<BR>
+<BR>
+<a href="http://lovelikelove.ipdisk.co.kr:8000/frozen3.php">조회화면이동</a>
+
+
+
+</FORM>
+</body>
+<script src="baco.js"></script>
+<script>
+    function docReady(fn) {
+      
+        // see if DOM is already available
+        if (document.readyState === "complete"
+            || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn,1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function () {
+        var resultContainer = document.getElementById('qr-reader-results');
+        var lastResult, countResults = 0;
+      
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText !== lastResult) {
+                ++countResults;
+                lastResult = decodedText;
+                // Handle on success condition with the decoded message.
+                console.log(`Scan result ${decodedText}`, decodedResult);
+              
+              document.getElementById('AA').value=decodedText;
+              $('#fm').submit();
+              
+            }
+          
+        }
+
+       var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+</script>
+</head>
+</html>
