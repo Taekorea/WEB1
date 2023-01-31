@@ -1,0 +1,146 @@
+<HTML>
+<HEAD>
+<META  http-equiv="content-type" content="text/html; charset=utf-8" >
+<META name="viewport" content="width=device-width, initial-scale=1, minimun-scale=1, maximum-scale=1">
+<style>
+.bt {
+text-indent:0px;
+    	text-decoration:none;
+  font-size:30px;
+  font-family:Arial;
+  width:70px;
+  height:70px;
+  border-width:1px;
+  color:#fff;
+  border-color:#84bbf3;
+  font-weight:bold;
+  border-top-left-radius:6px;
+  border-top-right-radius:6px;
+  border-bottom-left-radius:6px;
+  border-bottom-right-radius:6px;
+  box-shadow:inset 0px 1px 0px 0px #dcecfb;
+  text-shadow:inset 0px 1px 0px #528ecc;
+  background:linear-gradient(#bddbfa, #80b5ea);
+    margin-top:  10px;
+    margin-right:  5px;
+
+}
+
+.bt:hover {
+  background: linear-gradient(#80b5ea, #bddbfa);
+}
+
+.bt1 {
+  font-size:15px;
+  font-family:Arial;
+  width:140px;
+  height:70px;
+  border-width:1px;
+  color:#fff;
+  border-color:#ffffff;
+  border-top-left-radius:4px;
+  border-top-right-radius:4px;
+  border-bottom-left-radius:4px;
+  border-bottom-right-radius:4px;
+  box-shadow:inset 0px 39px 0px -24px #e67a73;
+  text-shadow:inset 0px 1px 0px #b23e35;
+  background:#e4685d;
+
+}
+
+.bt1:hover {
+  background: #eb675e
+}
+    </style>
+    
+
+<html>
+<head>
+    <title>Html-Qrcode Demo</title>
+  <META  http-equiv="content-type" content="text/html; charset=utf-8" >
+<META name="viewport" content="width=device-width, initial-scale=1, minimun-scale=1, maximum-scale=1">
+<body>
+    <div id="qr-reader" style="width:350px"></div>
+    <div id="qr-reader-results"></div>
+  <FORM ID="fm" METHOD="get" ACTION="http://lovelikelove.ipdisk.co.kr:8000/bar.php">
+  <li><label for="A">바코드번호</label><br><INPUT TYPE ="tel" NAME="A" ID="teltel" style="width:350px;height:40px;font-size:30px;color:red;"></li>
+    <div align="center"><button TYPE="submit" VALUE="전송하기" style="width:130px;height:30px;"><font size="4pt" color="black">등록하기</font></button></div>
+      </FORM>
+    <div>시약 개봉 폐기용</div><br>
+</head>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" ID="A" onclick="test1(event)" value="1" class="bt">
+<input type="button" ID="B" onclick="test2(event)" value="2" class="bt">
+<input type="button" ID="C" onclick="test3(event)" value="3"class="bt"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" ID="D" onclick="test4(event)" value="4"class="bt">
+<input type="button" ID="E" onclick="test5(event)" value="5"class="bt">
+<input type="button" ID="F" onclick="test6(event)" value="6"class="bt"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" ID="G" onclick="test7(event)" value="7"class="bt">
+<input type="button" ID="H" onclick="test8(event)" value="8"class="bt">
+<input type="button" ID="I" onclick="test9(event)" value="9"class="bt"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" ID="J" onclick="test0(event)" value="0"class="bt">
+<input type="button" ID="L" onclick="test010(event)" value="010"class="bt">
+<input type="button" ID="K" onclick="test10(event)" value="Del"class="bt"><br> 
+<script>
+
+function test1(event) {
+var aa=document.getElementById("teltel").value;
+var a=document.getElementById("A").value;
+document.getElementById("teltel").value = aa+ a;
+}
+function test2(event) {
+var aa=document.getElementById("teltel").value;
+var b=document.getElementById("B").value;
+document.getElementById("teltel").value = aa+ b;
+}
+function test3(event) {
+var aa=document.getElementById("teltel").value;
+var c=document.getElementById("C").value;
+document.getElementById("teltel").value = aa+ c;
+}
+function test4(event) {
+var aa=document.getElementById("teltel").value;
+var d=document.getElementById("D").value;
+document.getElementById("teltel").value = aa+ d;
+}
+function test5(event) {
+var aa=document.getElementById("teltel").value;
+var e=document.getElementById("E").value;
+document.getElementById("teltel").value = aa+ e;
+}
+function test6(event) {
+var aa=document.getElementById("teltel").value;
+var f=document.getElementById("F").value;
+document.getElementById("teltel").value = aa+ f;
+}
+function test7(event) {
+var aa=document.getElementById("teltel").value;
+var g=document.getElementById("G").value;
+document.getElementById("teltel").value = aa+ g;
+}
+function test8(event) {
+var aa=document.getElementById("teltel").value;
+var h=document.getElementById("H").value;
+document.getElementById("teltel").value = aa+ h;
+}
+function test9(event) {
+var aa=document.getElementById("teltel").value;
+var i=document.getElementById("I").value;
+document.getElementById("teltel").value = aa+ i;
+}
+function test0(event) {
+var aa=document.getElementById("teltel").value;
+var j=document.getElementById("J").value;
+document.getElementById("teltel").value = aa+ j;
+}
+function test010(event) {
+var aa=document.getElementById("teltel").value;
+var l=document.getElementById("L").value;
+document.getElementById("teltel").value = aa+ l;
+}
+function test10(event) {
+document.getElementById("teltel").value = '';
+}
+
+
+</script>  
+</html>
