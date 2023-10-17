@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>바코드 스캐너</title>
+</head>
+<body>
+  <h1>바코드 스캔</h1>
+  <video id="camera" autoplay playsinline></video>
+  <canvas id="canvas" style="display: none;"></canvas>
+
+  <script>
+    // 비디오 스트림을 가져옵니다.
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      .then(function (stream) {
+        var video = document.getElementById('camera');
+        video.srcObject = stream;
+      })
+      .catch(function (error) {
+        console.error('카메라 접근 권한을 얻지 못했습니다.', error);
+      });
+
+    // 비디오 스트림에서 바코드를 스캔합니다.
+    var video = document.getElementById('camera');
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    video.addEventListener('loadedmetadata', function () {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    });
+
+    video.addEventListener('play', function () {
+      requestAnimationFrame(scan);
+    });
+
+    function scan() {
+      if (video.paused || video.ended) {
+        return;
+      }
+
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+      // 바코드 스캔 라이브러리 (예: ZXing)를 사용하여 imageData에서 바코드를 식별하고 처리합니다.
+      // 여기에서는 바코드 스캔 라이브러리의 사용 방법을 보여줍니다.
+      // 바코드가 감지되면 처리할 코드를 작성하세요.
+
+      // 바코드 스캔된 후에 다시 스캔을 요청합니다.
+      requestAnimationFrame(scan);
+    }
+  </script>
+</body>
+</html>
