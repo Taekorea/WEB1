@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>바코드 스캐너</title>
+</head>
+<body>
+    <video id="barcodeScanner" width="300" height="200"></video>
+    <input type="text" id="barcodeInput" placeholder="바코드 결과를 입력하세요">
+    
+    <script>
+        const video = document.getElementById('barcodeScanner');
+        const barcodeInput = document.getElementById('barcodeInput');
+
+        // 웹 카메라 접근 권한 요청
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('카메라 접근 오류:', error);
+            });
+
+        // 바코드 스캔 라이브러리인 Quagga.js 사용
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: video
+            },
+            decoder: {
+                readers: ["ean_reader", "upc_reader", "code_128_reader", "qr_reader", "datamatrix_reader"]
+            }
+        });
+
+        Quagga.onDetected((result) => {
+            const code = result.codeResult.code;
+            barcodeInput.value = code; // 바코드 결과를 input 상자에 입력
+        });
+
+        // 바코드 스캐너 시작
+        Quagga.start();
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+</body>
+</html>
