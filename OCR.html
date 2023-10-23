@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>스마트폰 후면 카메라 OCR</title>
-      <META  http-equiv="content-type" content="text/html; charset=utf-8" >
-<META name="viewport" content="width=device-width, initial-scale=1, minimun-scale=1, maximum-scale=1">
+    <title>OCR 스마트폰 카메라 데모</title>
 </head>
 <body>
     <video id="video" autoplay playsinline></video>
@@ -13,7 +11,7 @@
     <div id="result"></div>
 
     <!-- Tesseract.js 라이브러리 추가 -->
-    <script src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js"></script>
+    <script src="https://tesseract.projectnaptha.com/1.0.10/tesseract.min.js"></script>
 
     <script>
         const video = document.getElementById('video');
@@ -25,10 +23,9 @@
         let stream;
         let imageCapture;
 
-        // 스마트폰 후면 카메라 활성화
         async function setupCamera() {
             const constraints = {
-                video: { facingMode: 'environment' } // 'environment'로 지정하여 후면 카메라 사용
+                video: { facingMode: 'environment' } // 후면 카메라 사용
             };
 
             stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -40,7 +37,6 @@
             captureButton.disabled = false;
         }
 
-        // 이미지 캡처
         async function captureImage() {
             const photo = await imageCapture.takePhoto();
             canvas.width = photo.width;
@@ -50,11 +46,10 @@
             recognizeButton.disabled = false;
         }
 
-        // OCR 실행
         async function recognizeImage() {
             const textResult = await Tesseract.create({
-                workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/worker.js',
-                corePath: 'https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract-core.wasm.js',
+                workerPath: 'https://tesseract.projectnaptha.com/1.0.10/worker.js',
+                corePath: 'https://tesseract.projectnaptha.com/1.0.10/tesseract-core.wasm.js',
             }).recognize(canvas.toDataURL('image/jpeg'));
 
             resultDiv.textContent = 'OCR 결과: ' + textResult.data.text;
@@ -67,4 +62,3 @@
     </script>
 </body>
 </html>
-
