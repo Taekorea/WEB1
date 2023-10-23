@@ -7,7 +7,10 @@
     <h1>스마트폰 카메라 OCR</h1>
     <input type="file" accept="image/*" capture="camera" id="cameraInput" style="display: none;">
     <button id="captureButton">카메라로 촬영</button>
-    <div id="result">여기에 추출된 텍스트가 표시됩니다.</div>
+    <div>
+        <img id="capturedImage" src="" alt="촬영된 이미지" style="max-width: 100%;">
+    </div>
+    <textarea id="result" rows="10" cols="40" placeholder="여기에 추출된 텍스트가 입력됩니다." readonly></textarea>
 
     <!-- Tesseract.js 스크립트를 불러옵니다. -->
     <script src="https://tesseract.projectnaptha.com/tesseract.js"></script>
@@ -33,8 +36,10 @@
                             logger: info => console.log(info) // OCR 진행 상황을 콘솔에 출력합니다.
                         }
                     ).then(({ data: { text } }) => {
-                        // OCR 결과를 웹 페이지에 표시합니다.
-                        document.getElementById('result').textContent = text;
+                        // OCR 결과를 텍스트 상자에 입력합니다.
+                        document.getElementById('result').value = text;
+                        // 촬영된 이미지를 표시합니다.
+                        document.getElementById('capturedImage').src = URL.createObjectURL(file);
                     });
                 };
                 reader.readAsDataURL(file);
