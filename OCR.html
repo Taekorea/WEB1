@@ -1,42 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>자동차 번호판 인식</title>
-    <META  http-equiv="content-type" content="text/html; charset=utf-8" >
-<META name="viewport" content="width=device-width, initial-scale=1, minimun-scale=1, maximum-scale=1">
+    <title>스마트폰 카메라 OCR</title>
 </head>
 <body>
-    <input type="file" accept="image/*" capture="camera" id="fileInput">
-    <button id="recognizeButton">번호판 인식</button>
-    <textarea id="result" rows="5" cols="40"></textarea>
+    <video id="video" autoplay playsinline></video>
+    <button id="captureButton">사진 찍기</button>
+    <button id="recognizeButton">OCR 실행</button>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <div id="result"></div>
 
     <!-- Tesseract.js 라이브러리 추가 -->
     <script src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js"></script>
 
     <script>
-        document.getElementById('recognizeButton').addEventListener('click', function() {
-            var fileInput = document.getElementById('fileInput');
-            var resultTextArea = document.getElementById('result');
-            resultTextArea.value = '인식 중...';
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('captureButton');
+        const recognizeButton = document.getElementById('recognizeButton');
+        const resultDiv = document.getElementById('result');
 
-            if (fileInput.files.length > 0) {
-                var file = fileInput.files[0];
+        let stream;
+        let imageCapture;
 
-                Tesseract.create({
-                    langPath: 'https://tessdata.projectnaptha.com/4.0.0',
-                    workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/worker.js',
-                    corePath: 'https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract-core.wasm.js',
-                }).recognize(
-                    file,
-                    'kor', // 한국어 언어 설정
-                    { logger: info => console.log(info) } // 필요에 따라 로그 설정
-                ).then(({ data: { text } }) => {
-                    resultTextArea.value = '인식 결과: ' + text;
-                });
-            } else {
-                resultTextArea.value = '이미지를 업로드해 주세요.';
-            }
-        });
+        // 스마트폰 카메라 활성화
+        async function setupCamera() {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+
+            const track = stream.getVideoTracks()[0];
+            imageCapture = new ImageCapture(track);
+
+            captureButton.disabled = false;
+        }
+
+        // 이미지 캡처
+        async function captureImage() {
+            const photo = await imageCapture.takePhoto();
+            canvas.width = photo.width;
+            canvas.height = photo.height;
+            const context = canvas.getContext('2d');
+            context.drawImage(photo, 0, 0, photo.width, photo.height);
+            recognizeButton.disabled = false;
+        }
+
+        // OCR 실행
+        async function recognizeImage() {
+            const textResult = await Tesseract.create({
+                workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/worker.js',
+                corePath: 'https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract-core.wasm.js',
+            }).recognize(canvas.toDataURL('image/jpeg'));
+
+            resultDiv.textContent = 'OCR 결과: ' + textResult.data.text;
+        }
+
+        captureButton.addEventListener('click', captureImage);
+        recognizeButton.addEventListener('click', recognizeImage);
+
+        setupCamera();
     </script>
 </body>
 </html>
+
