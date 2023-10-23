@@ -1,61 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>스마트폰 카메라 OCR</title>
+    <meta charset="UTF-8">
+    <title>이미지 텍스트 인식</title>
 </head>
 <body>
-    <h1>스마트폰 카메라 OCR</h1>
-    <video id="cameraView" autoplay></video>
-    <button id="captureButton">카메라로 촬영</button>
-    <canvas id="captureCanvas" style="display: none;"></canvas>
-    <div id="result">여기에 추출된 텍스트가 표시됩니다.</div>
+    <h1>스마트폰 카메라 이미지 텍스트 인식</h1>
+    <input type="file" accept="image/*" capture="camera" id="imageInput" onchange="processImage()">
+    <div id="imageContainer">
+        <img id="selectedImage" style="max-width: 100%;">
+    </div>
+    <div id="textOutput">
+        <h2>텍스트:</h2>
+        <p id="recognizedText"></p>
+    </div>
 
     <script>
-        const cameraView = document.getElementById('cameraView');
-        const captureButton = document.getElementById('captureButton');
-        const captureCanvas = document.getElementById('captureCanvas');
-        const resultDiv = document.getElementById('result');
+        function processImage() {
+            const input = document.getElementById('imageInput');
+            const selectedImage = document.getElementById('selectedImage');
+            const recognizedText = document.getElementById('recognizedText');
 
-        let stream = null;
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedImage.src = e.target.result;
 
-        // 비디오 스트림 시작
-        async function startCamera() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                cameraView.srcObject = stream;
-            } catch (error) {
-                console.error('카메라 엑세스 오류: ' + error);
+                    // 이미지 인식 및 텍스트 추출 작업을 수행하는 코드
+                    // 이 부분에서 OCR(광학 문자 인식) 라이브러리 또는 API를 사용할 수 있습니다.
+
+                    // 추출된 텍스트를 recognizedText 엘리먼트에 표시
+                    recognizedText.textContent = "추출된 텍스트가 여기에 표시됩니다.";
+                };
+                reader.readAsDataURL(file);
             }
         }
-
-        // 비디오 스트림 정지
-        function stopCamera() {
-            if (stream) {
-                const tracks = stream.getTracks();
-                tracks.forEach(track => track.stop());
-            }
-        }
-
-        // 캡처 버튼 클릭 시 실행되는 함수
-        captureButton.addEventListener('click', function() {
-            const context = captureCanvas.getContext('2d');
-            captureCanvas.width = cameraView.videoWidth;
-            captureCanvas.height = cameraView.videoHeight;
-            context.drawImage(cameraView, 0, 0, captureCanvas.width, captureCanvas.height);
-
-            // 이미지 데이터 추출
-            const imageData = captureCanvas.toDataURL('image/jpeg');
-
-            // OCR을 위해 서버로 이미지를 전송하고 결과를 받아올 수 있어야 합니다.
-            // 서버 측에서 OCR 작업을 수행하는 방법을 구현해야 합니다.
-            // 이 코드에서는 서버 측 구현이 빠져 있으므로 서버 측 구현이 필요합니다.
-
-            // 결과를 표시
-            resultDiv.textContent = 'OCR 결과가 표시됩니다.';
-        });
-
-        // 페이지 로드 시 카메라 시작
-        startCamera();
     </script>
 </body>
 </html>
+
