@@ -6,7 +6,7 @@
 <body>
     <input type="file" accept="image/*" capture="camera" id="fileInput">
     <button id="recognizeButton">번호판 인식</button>
-    <div id="result"></div>
+    <textarea id="result" rows="5" cols="40"></textarea>
 
     <!-- Tesseract.js 라이브러리 추가 -->
     <script src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js"></script>
@@ -14,8 +14,8 @@
     <script>
         document.getElementById('recognizeButton').addEventListener('click', function() {
             var fileInput = document.getElementById('fileInput');
-            var resultDiv = document.getElementById('result');
-            resultDiv.textContent = '인식 중...';
+            var resultTextArea = document.getElementById('result');
+            resultTextArea.value = '인식 중...';
 
             if (fileInput.files.length > 0) {
                 var file = fileInput.files[0];
@@ -29,10 +29,10 @@
                     'kor', // 한국어 언어 설정
                     { logger: info => console.log(info) } // 필요에 따라 로그 설정
                 ).then(({ data: { text } }) => {
-                    resultDiv.textContent = '인식 결과: ' + text;
+                    resultTextArea.value = '인식 결과: ' + text;
                 });
             } else {
-                resultDiv.textContent = '이미지를 업로드해 주세요.';
+                resultTextArea.value = '이미지를 업로드해 주세요.';
             }
         });
     </script>
