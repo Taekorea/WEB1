@@ -8,7 +8,7 @@
     <input type="file" accept="image/*" capture="camera" id="cameraInput" style="display: none;">
     <button id="captureButton">카메라로 촬영</button>
     <div>
-        <img id="capturedImage" src="" alt="촬영된 이미지" style="max-width: 100%;">
+        <img id="capturedImage" src="" alt="촬영된 이미지" style="max-width: 100%; display: none;">
     </div>
     <textarea id="result" rows="10" cols="40" placeholder="여기에 추출된 텍스트가 입력됩니다." readonly></textarea>
 
@@ -38,8 +38,11 @@
                     ).then(({ data: { text } }) => {
                         // OCR 결과를 텍스트 상자에 입력합니다.
                         document.getElementById('result').value = text;
+                        
                         // 촬영된 이미지를 표시합니다.
-                        document.getElementById('capturedImage').src = URL.createObjectURL(file);
+                        var capturedImage = document.getElementById('capturedImage');
+                        capturedImage.src = URL.createObjectURL(file);
+                        capturedImage.style.display = 'block'; // 이미지를 보이도록 설정
                     });
                 };
                 reader.readAsDataURL(file);
