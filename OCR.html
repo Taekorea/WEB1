@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>스마트폰 카메라 OCR</title>
+    <title>스마트폰 후면 카메라 OCR</title>
 </head>
 <body>
     <video id="video" autoplay playsinline></video>
@@ -23,9 +23,13 @@
         let stream;
         let imageCapture;
 
-        // 스마트폰 카메라 활성화
+        // 스마트폰 후면 카메라 활성화
         async function setupCamera() {
-            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const constraints = {
+                video: { facingMode: 'environment' } // 'environment'로 지정하여 후면 카메라 사용
+            };
+
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
             video.srcObject = stream;
 
             const track = stream.getVideoTracks()[0];
