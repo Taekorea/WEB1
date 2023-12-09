@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Html-Qrcode Demo</title>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/grid.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/version.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/detector.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/formatinf.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/errorlevel.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/bitmat.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/datablock.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/bmparser.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/datamask.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/rsdecoder.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/gf256poly.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/gf256.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/decoder.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qrcode.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/findpat.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/alignpat.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/databr.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/datamask.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/align.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/databr-patch.js"></script>
+</head>
+<body>
+    <div id="qr-reader" style="width:350px"></div>
+    <div id="qr-reader-results"></div>
+    <form id="myForm">
+        <li><label for="A">바코드번호</label><br><input type="tel" name="A" id="AA" style="width:350px;height:40px;font-size:30px;color:red;"></li>
+        <div align="center"><button type="button" onclick="submitForm()" style="width:130px;height:30px;"><font size="4pt" color="black">등록하기</font></button></div>
+    </form>
+    <div>시약 개봉 폐기용</div>
+
+    <script src="baco.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function docReady(fn) {
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
+            }
+        }
+
+        function submitForm() {
+            $.ajax({
+                url: 'https://lovelikelove.ipdisk.co.kr:8000/bar.php',
+                type: 'GET',
+                data: $('#myForm').serialize(),
+                success: function (response) {
+                    console.log(response);
+                    alert("등록되었습니다.");
+                },
+                error: function (error) {
+                    console.error(error);
+                    alert("등록에 실패했습니다.");
+                }
+            });
+        }
+
+        docReady(function () {
+            var resultContainer = document.getElementById('qr-reader-results');
+            var lastResult, countResults = 0;
+
+            function onScanSuccess(decodedText, decodedResult) {
+                if (decodedText !== lastResult) {
+                    ++countResults;
+                    lastResult = decodedText;
+                    console.log(`Scan result ${decodedText}`, decodedResult);
+
+                    document.getElementById('AA').value = decodedText;
+                }
+            }
+
+            var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+            html5QrcodeScanner.render(onScanSuccess);
+        });
+    </script>
+</body>
+</html>
