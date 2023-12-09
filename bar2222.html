@@ -1,47 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <title>Html-Qrcode Demo</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="baco.js"></script>
+    <title>Html-Qrcode 데모</title>
 </head>
 <body>
     <div id="qr-reader" style="width: 350px"></div>
     <div id="qr-reader-results"></div>
-    <form id="fm" method="get" action="http://lovelikelove.ipdisk.co.kr:8000/bar.php">
+    <form id="fm" method="post" action="">
         <li>
             <label for="A">바코드번호</label><br>
             <input type="tel" name="A" id="AA" style="width: 350px; height: 40px; font-size: 30px; color: red;">
         </li>
         <div align="center">
-            <button type="button" onclick="submitForm()" style="width: 130px; height: 30px;">
+            <button type="submit" value="전송하기" style="width: 130px; height: 30px;">
                 <font size="4pt" color="black">등록하기</font>
             </button>
         </div>
     </form>
     <div>시약 개봉 폐기용</div>
 
+    <script src="baco.js"></script>
     <script>
-        function submitForm() {
-            var decodedText = document.getElementById('AA').value;
-
-            $.ajax({
-                type: "GET",
-                url: "http://lovelikelove.ipdisk.co.kr:8000/bar.php",
-                data: { A: decodedText },
-                success: function (response) {
-                    // 성공 시 처리
-                    console.log("Form submitted successfully:", response);
-                },
-                error: function (error) {
-                    // 오류 시 처리
-                    console.error("Error submitting form:", error);
-                }
-            });
-        }
-
         function docReady(fn) {
             if (document.readyState === "complete" || document.readyState === "interactive") {
                 setTimeout(fn, 1);
@@ -59,18 +40,32 @@
                     ++countResults;
                     lastResult = decodedText;
                     console.log(`Scan result ${decodedText}`, decodedResult);
-
                     document.getElementById('AA').value = decodedText;
-                    // $('#fm').submit(); // 이 부분을 주석처리하고 직접 submitForm 함수 호출
-                    submitForm();
+                    // $('#fm').submit(); // 자동 제출을 방지하기 위해 이 줄을 주석 처리
                 }
             }
 
-            var html5QrcodeScanner = new Html5QrcodeScanner(
-                "qr-reader", { fps: 10, qrbox: 250 });
+            var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
             html5QrcodeScanner.render(onScanSuccess);
+
+            // 폼 제출을 처리하기 위해 AJAX 제출 추가
+            document.getElementById('fm').addEventListener('submit', function (event) {
+                event.preventDefault(); // 기본 폼 제출 방지
+                var barcodeValue = document.getElementById('AA').value;
+
+                // MySQL 테이블에 데이터를 삽입하기 위한 서버로의 AJAX 요청
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://lovelikelove.ipdisk.co.kr:8000/bar.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // 필요한 경우 응답 처리
+                        console.log(xhr.responseText);
+                    }
+                };
+                xhr.send('barcode=' + barcodeValue);
+            });
         });
     </script>
 </body>
 </html>
-
